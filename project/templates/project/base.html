@@ -1,0 +1,47 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang='ru'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel='stylesheet' href='{% static 'project/css/bootstrap.css' %}'>
+    <link rel='stylesheet' href='{% static 'project/css/font-awesome.css' %}'>
+    <link rel='stylesheet' href='{% static 'project/css/jquery-ui.css' %}'>
+    <link rel='stylesheet' href='{% static 'project/css/jquery-ui.theme.css' %}'>
+    <link rel='stylesheet' href='{% static 'project/style.css' %}'>
+</head>
+
+<body>
+
+{% block header %}
+    {% include 'project/header.html' %}
+{% endblock %}
+
+<!--Разметка-->
+
+{% block content %}
+{% endblock %}
+
+
+
+
+<!--Подвал-->
+{% block footer %}
+    {% include 'project/footer.html' %}
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="{% static "project/js/jquery.js" %}"></script>
+    <script src="{% static "project/js/jquery-ui.js" %}"></script>
+    <script src="{% static "project/js/bootstrap.js" %}"></script>
+    <script src="{% static "project/app.js" %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    {% csrf_token %}
+    <script type="text/javascript">
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    </script>
+{% endblock %}
+</body>
+</html>

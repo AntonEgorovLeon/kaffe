@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Client, Achievment
+
+admin.site.register(Client)
+admin.site.register(Achievment)
