@@ -32,8 +32,12 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'ClientApp',
+    'ShopApp',
+    'EventApp',
+    'NewsApp',
     'registration',
     'polls',
+    'tags',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -112,16 +116,19 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
+
+DATE_FORMAT = 'd E Y'
+DATETIME_FORMAT = 'd E Y H:i'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

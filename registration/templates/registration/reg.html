@@ -4,46 +4,58 @@
 <div class="container ">
 	<h2>Регистрация</h2>
 	<h3>Новый пользователь</h3>
-	{% for error in form.non_field_errors %}
-		<span class="error-message">{{ error }}</span>
-	{% endfor %}
+
 	<form method="POST" class="form-horizontal">{% csrf_token %}
+        {% if form.error_dict %}
+          <p class="error">Пожалуйста исправьте нижеприведённые ошибки.</p>
+        {% endif %}
+        {% for error in form.non_field_errors %}
+            <span class="error-message">{{ error }}</span>
+        {% endfor %}
+
             <div class="form-group">
+                {% if form.username.errors %}
+                  {{ form.username.html_error_list }}
+                {% endif %}
                 <label class="control-label col-sm-2" for="id_username">Логин:</label> 
                 <div class="col-sm-10">{{ form.username }}</div>
             </div>
             <div class="form-group">
+                <label class="control-label col-sm-2" for="id_username">Имя:</label> 
+                <div class="col-sm-10">{{ form.first_name }}</div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="id_username">Фамилия:</label> 
+                <div class="col-sm-10">{{ form.last_name }}</div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="id_username">E-mail:</label> 
+                <div class="col-sm-10">{{ form.email }}</div>
+            </div>
+            <div class="form-group">
+                {% if form.password1.errors %}
+                    {{ form.password1.html_error_list }}
+                {% endif %}
                 <label class="control-label col-sm-2" for="id_password1">Пароль:</label> 
                 <div class="col-sm-10">{{ form.password1 }}</div>
             </div>
             <div class="form-group">
+                {% if form.password2.errors %}
+                    {{ form.password2.html_error_list }}
+                {% endif %}
                 <label class="control-label col-sm-2" for="id_password2">Пароль (снова):</label> 
                 <div class="col-sm-10">{{ form.password2 }}</div>
-            </div>
+            </div>   
+            <ul>
+                <li>Ваш пароль не должен совпадать с вашим именем или другой 
+                    персональной информацией или быть слишком похожим на неё.</li>
+                <li>Ваш пароль должен содержать как минимум 8 символов.</li>
+                <li>Ваш пароль не может быть одним из широко распространённых паролей.</li>
+                <li>Ваш пароль не может состоять только из цифр.</li>
+            </ul>
             <div>
                 <button type="submit" class="save btn btn-default">Зарегистрироваться</button>
-            </div>        
-<!-- 
-
-    {{ form.as_p }}
-    {% if form.error_dict %}
-      <p class="error">Пожалуйста исправьте нижеприведённые ошибки.</p>
-    {% endif %}
-
-    {% if form.username.errors %}
-      {{ form.username.html_error_list }}
-    {% endif %}
-    <label for="id_username">Логин:</label> {{ form.username }}
-
-    {% if form.password1.errors %}
-      {{ form.password1.html_error_list }}
-    {% endif %}
-    <label for="id_password1">Пароль:</label> {{ form.password1 }}
-
-    {% if form.password2.errors %}
-      {{ form.password2.html_error_list }}
-    {% endif %}
-    <label for="id_password2">Пароль (снова):</label> {{ form.password2 }} -->
+            </div> 
     </form>
 
 </div>

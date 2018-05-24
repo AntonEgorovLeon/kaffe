@@ -21,14 +21,26 @@
 	        		<!--навигационое меню сайта -->
 	        		<div class="col-sm-8">
 			        <div class="collapse navbar-collapse">
-			        <ul class="nav navbar-nav">
-			            <li class="active"><a href="#">Home</a></li>
-			            <li><a href="#about">About</a></li>
-			            <li><a href="#contact">Contact</a></li>
+			        <ul class="nav  nav-pills nav-justified navMenu">
+			            <li class=""><a href="/">Новости</a></li>
+			            <li><a href="/about/">О нас</a></li>
+
+                        {% if perms.ShopApp %} 
+                        <li class="">
+                            <a href="{% url 'ShopApp:index' %}">
+                                <i class="" aria-hidden="true"></i> Учет посетителей
+                            </a>
+                        </li>                               
+                        <li class="">
+                            <a href="{% url 'ShopApp:charts' %}">
+                                <i class="" aria-hidden="true"></i> Анализ посещений
+                            </a>
+                        </li>
+                        {% endif %}
 
                         {% if user.is_authenticated %}
                         <li>                            
-                                <a href="">*Личный кабинет {{user.username}}</a>
+                                <a href="{% url 'registration:profile' %}">Личный кабинет {{user.username}}</a>
                         </li>
                         <li class="">
                                 <a href="{% url 'registration:logout' %}">Выход</a> 
@@ -42,7 +54,7 @@
                         </li>
                         {% endif %}
 
-			            <li class="dropdown">
+<!-- 			            <li class="dropdown">
 				            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
 				            <ul class="dropdown-menu">
 								<li><a href="#">Action</a></li>
@@ -53,7 +65,7 @@
 								<li><a href="#">Separated link</a></li>
 								<li><a href="#">One more separated link</a></li>
 				            </ul>
-			            </li>
+			            </li> -->
 			        </ul>
 			        </div>
 				    </div>

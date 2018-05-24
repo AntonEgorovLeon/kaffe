@@ -1,0 +1,33 @@
+{% extends 'project/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<h2>Приветствуем на главной странице</h2>
+		<div class="col-md-12">
+			<div class="layer">
+				<caption>Список клиентов</caption>
+				<table class="table table-bordered">
+					<tr class="tableHead">
+						<td>Имя</td>
+						<td>Телефон</td>
+						<td>Возраст</td>
+					</tr>
+					{% for client in сlients %}
+					<tr class="" id="{{client.id}}">
+						<td><a href="">{{client.ShortName}}</a></td>
+						<td>{{client.Phone}}</td>
+						<td>{{client.Begindate}}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+
+{% endblock %}

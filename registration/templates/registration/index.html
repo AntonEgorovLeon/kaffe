@@ -11,16 +11,7 @@
     <link rel='stylesheet' href='{% static 'project/css/signin.css' %}'>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <title>{% block title %}{% endblock %}</title>
-    {% block style %}{% endblock %}
-    {% block script %}
-        <script src="{% static "project/js/jquery.min.js" %}"></script>
-        <script src="{% static "project/js/jquery-ui.js" %}"></script>
-        <script src="{% static "project/js/app.js" %}"></script>
-        {% csrf_token %}
-        <script type="text/javascript">
-        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-        </script>
-    {% endblock %}
+
 </head>
 
 <body>
@@ -36,7 +27,16 @@
         {% endfor %}
     </form>
 </div>
-
+{% block style %}{% endblock %}
+{% block script %}
+    <script src="{% static "project/js/jquery.min.js" %}"></script>
+    <script src="{% static "project/js/jquery-ui.js" %}"></script>
+    <script src="{% static "project/js/app.js" %}"></script>
+    {% csrf_token %}
+    <script type="text/javascript">
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    </script>
+{% endblock %}
 
 </body>
 </html>

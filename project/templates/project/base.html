@@ -18,11 +18,11 @@
     {% include 'project/header.html' %}
 {% endblock %}
 
+<div class="container">
 <!--Разметка-->
-
 {% block content %}
 {% endblock %}
-
+</div>
 
 
 
@@ -37,7 +37,6 @@
     <script src="{% static "project/js/jquery-ui.js" %}"></script>
     <script src="{% static "project/js/bootstrap.js" %}"></script>
     <script src="{% static "project/app.js" %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     {% csrf_token %}
     <script type="text/javascript">
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();

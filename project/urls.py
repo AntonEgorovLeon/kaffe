@@ -19,11 +19,14 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^ClientApp/', include('ClientApp.urls')),
+    url(r'^client/', include('ClientApp.urls')),
+    url(r'^shop/', include('ShopApp.urls')),
     url(r'^registration/', include('registration.urls')),
     url(r'^polls/', include('polls.urls')),
     url(r'^$', views.index),
+    url(r'^about/', views.HomePageView.as_view(), name='about'),
     # url(r'^$', views.index),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

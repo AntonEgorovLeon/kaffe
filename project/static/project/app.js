@@ -4,7 +4,7 @@ $(document).ready(function(){
     	$.ajax({ 
     		dataType: "json",
     		type: "POST", 
-    		url: "{% url 'crm:index'%}",     
+    		url: "{% url 'shop:index'%}",     
     		data: {id},
     		success: function(json){
     			charts(json,"ColumnChart");
@@ -63,7 +63,7 @@ $(document).ready(function(){
         $.ajax({ 
             dataType: "json",
             type: "POST",
-            url: '/crm/charts_get/', 
+            url: '/shop/charts_get/', 
             // url: '{% url "welcome:clientDetail" %}', 
             data: {id1, id2},
             // data : { cl_id : $(this).attr("id") },

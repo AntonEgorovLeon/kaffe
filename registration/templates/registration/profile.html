@@ -1,0 +1,36 @@
+{% extends 'project/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container ">
+	<h2>Информация о пользователе {{user.username}}</h2>
+    <form method="POST" class="form-horizontal">{% csrf_token %}
+        {% for error in form.non_field_errors %}
+            <span class="error-message">{{ error }}</span>
+        {% endfor %}
+        <div class="form-group">
+            {% if form.username.errors %}
+              {{ form.username.html_error_list }}
+            {% endif %}
+            <label class="control-label col-sm-2" for="id_username">Логин:</label> 
+            <div class="col-sm-10">{{ form.username }}</div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="id_username">Имя:</label> 
+            <div class="col-sm-10">{{ form.first_name }}</div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="id_username">Фамилия:</label> 
+            <div class="col-sm-10">{{ form.last_name }}</div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="id_username">E-mail:</label> 
+            <div class="col-sm-10">{{ form.email }}</div>
+        </div>
+        <br>
+        <button type="submit">Изменить</button>
+    </form>
+<a href='{% url "registration:change_password" %}'><button style="margin: 20px 0px" type = "button" class="btn btn-primary btn-md">Смена пароля</button></a>
+<a href='{% url "registration:profile_change" %}'><button style="margin: 20px 0px" type = "button" class="btn btn-primary btn-md">Дополнительные сведения</button></a>
+</div>
+
+{% endblock %}

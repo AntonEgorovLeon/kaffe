@@ -1,0 +1,80 @@
+{% extends 'project/base.html' %}
+{% load static %}
+{% block content %}
+
+<!--
+<style>
+	.layer {
+		overflow: scroll; /* Добавляем полосы прокрутки */
+		width: 300px; /* Ширина блока */
+		height: 400px; /* Высота блока */
+		padding: 5px; /* Поля вокруг текста */
+		border: solid 1px black; /* Параметры рамки */
+	} 
+</style>
+-->
+
+<div class="container">
+<div class="col-md-24">
+	<div class="col-md-8">
+	<h2>Manager</h2>
+	<h3>Продажа товара</h3>
+	{% for error in form.non_field_errors %}
+		<span class="error-message">{{ error }}</span>
+	{% endfor %}
+	<form method="POST" class="form-horizontal">{% csrf_token %}
+		<div class="row">
+			<div class="col-md-16" style="padding: 1px;">
+				<label for="id_client">Клиент:</label>
+			</div>
+			<div class="col-md-16" style="padding: 1px;">
+				<input name="id_client" required id="id_id_client">
+				<div class="clients_list"></div>
+			</div>
+			<div class="col-md-16" style="padding: 1px;">
+				<label for="id_product">Товар:</label>
+			</div>
+			<div class="col-md-16" style="padding: 1px;">
+				{{form.id_product}}
+			</div>
+			<div class="col-md-16" style="padding: 1px;">
+				<label for="note">Примечание:</label>
+			</div>
+			<div class="col-md-16" style="padding: 1px;">
+				{{form.Note}}
+			</div>
+			<div class="col-md-16" style="padding: 5px;">
+				<button type="submit" class="btn btn-large save">Добавить</button>
+			</div>
+		</div>
+	</form>
+	<h3>Выбрать клиента</h3>
+	<form method="POST" class="post-form">{% csrf_token %}
+		{{clientForm.as_p}}
+	</form>
+	</div>
+	<div class="col-md-16 ">
+		<div class="layer">
+			<table class="table table-bordered">
+			<tr class="tableHead">
+				<td>Имя</td>
+				<td>Телефон</td>
+				<td>Возраст</td>
+			</tr>
+			{% for client in Clients %}
+			<tr class="visitor-row" id="{{client.id}}">
+				<td class="visitor-login">{{client.ShortName}}</td>
+				<td>{{client.Site}}</td>
+				<td>{{client.Birthdate}}</td>
+
+			</tr>
+			{% endfor %}
+		</table>
+		</div>
+	</div>
+</div>
+</div>
+
+
+
+{% endblock %}
