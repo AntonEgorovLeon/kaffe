@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^shop/', include('ShopApp.urls')),
     url(r'^registration/', include('registration.urls')),
     url(r'^polls/', include('polls.urls')),
+    url(r'^news/', include('NewsApp.urls')),
     url(r'^$', views.index),
     url(r'^about/', views.HomePageView.as_view(), name='about'),
     # url(r'^$', views.index),

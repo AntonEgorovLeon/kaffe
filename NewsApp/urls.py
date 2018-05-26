@@ -4,6 +4,6 @@ from . import views
 
 app_name = 'NewsApp'
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^clientList/', views.IndexView.as_view(), name='indexView'),
+    url('^$', views.NewsList.as_view()),
+    url(r'^(?P<pk>\d+)/$', views.NewsDetail.as_view())
 ]

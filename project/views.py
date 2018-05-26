@@ -13,12 +13,12 @@ from django.utils import timezone
 from NewsApp.models import News
 
 def index(request):
-	news = News.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-	content = {
-		'News' : news
-		# 'Sales' : sale
-	}
-	return render(request, 'NewsApp/News.html', content)
+    news = News.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    content = {
+        'News' : news
+        # 'Sales' : sale
+    }
+    return render(request, 'NewsApp/News.html', content)
 
 class HomePageView(TemplateView):
 
