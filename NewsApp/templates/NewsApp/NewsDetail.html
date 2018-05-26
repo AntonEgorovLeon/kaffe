@@ -1,9 +1,10 @@
 {% extends 'project/base.html'%}
 {% block  content %}
-    <h3>{{ new.title }}</h3>
-    <p>{{ new.author.username }}</p>
-    <p>{{new.text}}</p>
-    <p>{{ new.published_date|date:"d-m-Y"}}</p>
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.author.username }}</p>
+    <img src="/media/{{ post.image }}">
+    <p>{{post.text}}</p>
+    <p>{{ post.published_date|date:"d-m-Y"}}</p>
     {% for comment in comments %}
         <p>{{ comment.author }}</p>
         <p>{{ comment.text }}</p>

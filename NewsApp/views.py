@@ -51,7 +51,7 @@ class NewsDetail(views.View):
         context.update(csrf(request))
         new = News.objects.get(pk=pk)
         comments = Comment.objects.filter(news=new)
-        context.update({'new': new, 'comments': comments})
+        context.update({'post': new, 'comments': comments})
         return render(request, self.template_name, context)
 
     def post(self, request, pk):

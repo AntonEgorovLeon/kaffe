@@ -15,6 +15,11 @@ class News(models.Model):
             default=timezone.now)
     published_date = models.DateTimeField(
             blank=True, null=True)
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='news',
+    )
 
     def get_absolute_url(self):
         return '/news/{0}'.format(self.pk)

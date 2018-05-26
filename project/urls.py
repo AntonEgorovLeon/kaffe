@@ -30,4 +30,6 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^about/', views.HomePageView.as_view(), name='about'),
     # url(r'^$', views.index),
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
+              + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
