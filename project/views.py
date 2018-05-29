@@ -23,3 +23,7 @@ def index(request):
 class HomePageView(TemplateView):
 
     template_name = "project/home.html"
+
+class AgreePageView(TemplateView):
+
+    template_name = "project/agree.html"

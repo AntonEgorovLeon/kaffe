@@ -1,10 +1,16 @@
 from django import forms
-from .models import Client,Sale
+from .models import Client,Sale, Visit
 
 class SaleForm(forms.ModelForm):
     class Meta:
         model = Sale
         fields = ('id_product','Note',)
+        # formset = ProductFormSetInit
+
+class VisitForm(forms.ModelForm):
+    class Meta:
+        model = Visit
+        fields = ('Note',)
         # formset = ProductFormSetInit
 
 class ClientForm(forms.ModelForm):

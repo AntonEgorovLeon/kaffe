@@ -16,9 +16,12 @@ class ClientInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     inlines = (ClientInline, )
 
+class ClientAdmin(admin.ModelAdmin):
+    list_display = ('pk','ShortName', 'Birthdate','Phone', 'Site')
+
 # Re-register UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
-admin.site.register(Client)
+admin.site.register(Client, ClientAdmin)
 admin.site.register(Achievment)

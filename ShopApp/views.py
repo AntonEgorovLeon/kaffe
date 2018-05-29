@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from .forms import SaleForm, ClientForm
+from .forms import SaleForm, ClientForm, VisitForm
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
@@ -33,21 +33,41 @@ def index(request):
             # id_client from POST is not a model object (just string of client name)
             # it needs to be replaced by an object in sale.form
             sale.id_client = Client.objects.get(ShortName=request.POST.get('id_client'))
-            if sale.id_client.pk == 20: 
-                f1 = False
-            else:
-                f1 = True
-            if Sale.objects.filter(id_client=sale.id_client, Date=sale.Date, id_product=sale.id_product).exists() and f1:
-                sale.save()
-                form.add_error(None, 'Такой посетитель уже учтен')
-                return render(request, 'ShopApp/manager.html',{'form': form,'Clients': client})
-            else:
-                sale.save()
-                form.add_error(None, 'Продажа учтена')
-                return render(request, 'ShopApp/manager.html',{'form': form,'Clients': client})
+            sale.save()
+            form.add_error(None, 'Продажа учтена')
+            return render(request, 'ShopApp/manager.html',{'form': form,'Clients': client})
         else:
             form = SaleForm()
     return render(request, 'ShopApp/manager.html',{'form': form,'Clients': client})
+
+
+@login_required(login_url='/registration/login/')
+def visit_add(request):
+    form = VisitForm(request.POST)
+    client = Client.objects.all()
+    if request.method == "POST":
+        if form.is_valid():
+            visit = form.save(commit=False)
+            visit.Date = timezone.now()
+            visit.id_manager = request.user
+            # id_client from POST is not a model object (just string of client name)
+            # it needs to be replaced by an object in sale.form
+            visit.id_client = Client.objects.get(ShortName=request.POST.get('id_client'))
+            if visit.id_client.pk == 20: 
+                f1 = False
+            else:
+                f1 = True
+            if Sale.objects.filter(id_client=visit.id_client, Date=visit.Date).exists() and f1:
+                visit.save()
+                form.add_error(None, 'Такой посетитель уже учтен')
+                return render(request, 'ShopApp/add_visit.html',{'form': form,'Clients': client})
+            else:
+                visit.save()
+                form.add_error(None, 'Посетитель учтен')
+                return render(request, 'ShopApp/add_visit.html',{'form': form,'Clients': client})
+        else:
+            form = VisitForm()
+    return render(request, 'ShopApp/add_visit.html',{'form': form,'Clients': client})
 
 
 @login_required(login_url='/registration/login/')
@@ -56,8 +76,12 @@ def charts(request):
     return render(request, 'ShopApp/charts.html',{'clientForm': data})
 
 def charts_get(request):
-    date1=request.POST.get(u'id1')
-    date2=request.POST.get(u'id2')
+    date1=request.POST.get("id1")
+    date2=request.POST.get('id2')
+    dates=request.POST.getlist('dates[]')
+    print (dates)
+    # date1='2018-05-01'
+    # date2='2018-05-27'
     def dictfetchall(cursor):
         columns = [col[0] for col in cursor.description]
         return [
@@ -65,8 +89,30 @@ def charts_get(request):
             for row in cursor.fetchall()
         ]
 
+    print(date1)
+    print(date2)
     with connection.cursor() as c:
-        c.execute('select Date as date, count(id) as sales from ShopApp_sale where Date between \''+date1+'\' and \''+date2+'\' group by Date order by Date')
+        # c.execute('select Date as date, count(id) as sales from ShopApp_sale where Date between \''+date1+'\' and \''+date2+'\' group by Date order by Date'%(date1, date2))
+        c.execute('select "Date", count(id) as Visits from public."ShopApp_visit" where "Date" between \'%s\' and \'%s\' group by "Date" order by "Date"'%(date1, date2))
+        return JsonResponse(dictfetchall(c), safe=False)
+    return render(request, 'ShopApp/charts.html')
+
+def charts_get1(request):
+    date1=request.POST.get("id11")
+    date2=request.POST.get('id12')
+
+    def dictfetchall(cursor):
+        columns = [col[0] for col in cursor.description]
+        return [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]
+
+    print(date1)
+    print(date2)
+    with connection.cursor() as c:
+        # c.execute('select Date as date, count(id) as sales from ShopApp_sale where Date between \''+date1+'\' and \''+date2+'\' group by Date order by Date'%(date1, date2))
+        c.execute('select "Date", count(id) as sales from public."ShopApp_sale" where "Date" between \'%s\' and \'%s\' group by "Date" order by "Date"'%(date1, date2))
         return JsonResponse(dictfetchall(c), safe=False)
     return render(request, 'ShopApp/charts.html')
 

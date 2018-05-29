@@ -14,7 +14,9 @@
 					        <span class="icon-bar"></span>
 					        <span class="icon-bar"></span>
 					    </button>
-					    <a class="navbar-brand" href="#">Гном Джо (в работе)</a>
+					    <a class="navbar-brand" href="/">
+					    	<img width="50px" height="45px"src="/media/logo.png">
+						</a>
 	        		</div>
 	        		</div>
 
@@ -26,16 +28,27 @@
 			            <li><a href="/about/">О нас</a></li>
 
                         {% if perms.ShopApp %} 
-                        <li class="">
-                            <a href="{% url 'ShopApp:index' %}">
-                                <i class="" aria-hidden="true"></i> Учет посетителей
-                            </a>
-                        </li>                               
-                        <li class="">
-                            <a href="{% url 'ShopApp:charts' %}">
-                                <i class="" aria-hidden="true"></i> Анализ посещений
-                            </a>
-                        </li>
+                        <li>
+                        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Магазин <span class="caret"></span></a>
+                        	<ul class="dropdown-menu">
+                            <li>
+	                            <a href="{% url 'ShopApp:index' %}">
+	                                <i class="" aria-hidden="true"></i> Учет продаж
+	                            </a>
+	                        </li>
+                            <li>
+	                            <a href="{% url 'ShopApp:visits' %}">
+	                                <i class="" aria-hidden="true"></i> Учет посетителей
+	                            </a>
+	                        </li>                               
+	                        <li class="">
+	                            <a href="{% url 'ShopApp:charts' %}">
+	                                <i class="" aria-hidden="true"></i> Анализ посещений
+	                            </a>
+	                        </li>
+                        	</ul>
+
+	                    </li>
                         {% endif %}
 
                         {% if user.is_authenticated %}

@@ -20,8 +20,15 @@ $(document).ready(function(){
         (day<10 ? '0' : '') + day;
 
 
+    $( ".datepicker" ).datepicker({
+        dateFormat:"yy-mm-dd"
+        // dateFormat:"DD, d MM, yy"
+    });
+    $( "#tabs" ).tabs();
+
 //init datepicker jQueryUI
     $( ".datepicker" ).val(output);    
+     $("#myCarousel").carousel();
 
 // hightlighting certain client in table
     $(".visitor-row").click(function(){   
@@ -59,6 +66,7 @@ $(document).ready(function(){
     $(".get_to_da_JSON").click(function(){ 
         var id1=$( "#dateRange1" ).val(); 
         var id2=$( "#dateRange2" ).val(); 
+        values = {"id1":id1, "id2":id2};
         // alert(id);
         $.ajax({ 
             dataType: "json",
@@ -80,6 +88,32 @@ $(document).ready(function(){
             }
         });
     });
+
+// SALES charts
+    $(".get_to_da_JSON1").click(function(){ 
+        var id11=$( "#dateRange11" ).val(); 
+        var id12=$( "#dateRange12" ).val(); 
+        $.ajax({ 
+            dataType: "json",
+            type: "POST",
+            url: '/shop/charts_get1/', 
+            // url: '{% url "welcome:clientDetail" %}', 
+            data: {id11, id12},
+            // data : { cl_id : $(this).attr("id") },
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            },
+
+            success: function(json){
+                ChartVisitTotal1(json,"ColumnChart");
+            },
+
+            error: function(json){
+                alert('request failed');
+            }
+        });
+    });
+
 
 // autocomplete for sales
     $("#id_id_client").keyup(function(){  
@@ -103,11 +137,7 @@ $(document).ready(function(){
         });
     });
 
-    $( ".datepicker" ).datepicker({
-        dateFormat:"yy-mm-dd"
-        // dateFormat:"DD, d MM, yy"
-    });
-    $( "#tabs" ).tabs();
+
 });
 
 
@@ -124,12 +154,12 @@ $(document).ready(function(){
 
 
 function clientTable(json){
-    var tmp = "<table border=\"1\"><tr><td>Имя</td><td>Телефон</td><td>Возраст</td></tr>";
+    var tmp = "<table class=\"table table-bordered\"><tr class=\"tableHead\"><td>Имя</td><td>Сайт</td><td>Дата рождения</td></tr>";
     for (var i = 0; i < json.listVal.length; i++) {
             tmp = tmp + 
                 "<tr class=\"visitor-row\" id="+json.listVal[i].id+">" +
-                    "<th class=\"visitor-login\">" + json.listVal[i].Login + "</th>" +
-                    "<th>" + json.listVal[i].Phone + "</th>" +
+                    "<th class=\"visitor-login\">" + json.listVal[i].ShortName + "</th>" +
+                    "<th>" + json.listVal[i].Site + "</th>" +
                     "<th>" + json.listVal[i].Birthdate + "</th>" +
                 "</tr> "    
     };
@@ -138,7 +168,7 @@ function clientTable(json){
     $(".visitor-row").click(function(){
         $(this).addClass("selected").siblings().removeClass("selected");
         var visit = $(".selected > .visitor-login").text();
-        $("#clients").val(visit);
+        $("#id_id_client").val(visit);
     });
 };
 
@@ -207,4 +237,50 @@ function ChartVisitTotal(json,ChartType)
 }
 
 
+function ChartVisitTotal1(json,ChartType)
+{
+    var c=ChartType;
+    var jsonData=json;
+    google.load("visualization", "1", {packages:["corechart"], callback:drawVisualization1});
 
+    function drawVisualization1()
+    {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Dates');
+        data.addColumn('number', 'Sales');
+
+        $.each(jsonData, function(i,jsonData)
+        {
+            var value=parseFloat(jsonData.sales);
+            var name=jsonData.date;
+            data.addRows([ [name, value]]);
+        });
+
+
+        var options = {
+            title : "Общее количество продаж",
+            is3D: true, //Pie Charts
+            colors : ['#54C492','#f96302' ], //Bar of Pie Charts
+            animation:{
+                duration: 3000,
+                easing: 'out',
+                startup: true
+            },
+        vAxis: {title: "Количество продаж"}, //Bar of Pie Charts
+        hAxis: {title: "Даты продаж "}, //Bar of Pie Charts
+        colorAxis: {colors: ['#54C492', '#cc0000']}, //Geo Charts
+        datalessRegionColor: '#dedede', //Geo Charts
+        defaultColor: '#dedede' //Geo Charts
+    };
+
+    var chart;
+       if(c=="ColumnChart") // Column Charts
+        chart=new google.visualization.ColumnChart(document.getElementById('chart_div'));
+       else if(c=="PieChart") // Pie Charts
+        chart=new google.visualization.PieChart(document.getElementById('piechart_div'));
+       else if(c=="BarChart") // Bar Charts
+        chart=new google.visualization.BarChart(document.getElementById('bar_div'));
+
+       chart.draw(data, options);
+   }
+}

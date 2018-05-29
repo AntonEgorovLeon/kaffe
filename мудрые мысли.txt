@@ -53,7 +53,7 @@
 
 
 Закон о персональных данных https://ruvds.com/ru-rub/privacy_policy
-
+http://www.garant.ru/actual/persona/soglasie/
 error messages form
 
 https://djbook.ru/rel1.9/topics/http/sessions.html - куки и сессии

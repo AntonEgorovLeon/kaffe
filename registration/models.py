@@ -30,6 +30,7 @@ class LoginForm(forms.Form):
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required = True)
+    agree = forms.BooleanField(required = True)
 
     class Meta:
         model = User
@@ -39,7 +40,8 @@ class RegistrationForm(UserCreationForm):
             'last_name',
             'email',
             'password1',
-            'password2'
+            'password2',
+            'agree'
         )
 
     def save(self, commit=True):

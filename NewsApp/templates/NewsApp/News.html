@@ -6,21 +6,24 @@
 	<div class="row">
 		<h1>Новости</h1>
 		{% for post in News %}
-		    <div>
+		    <div class="post">
 		        <a href="/news/{{ post.pk }}"><h2>{{ post.title }}</h2></a>
-                <p>{{ post.author.username }}</p>
-                <img src="/media/{{ post.image }}">
-		        <p>{{ post.text|linebreaksbr }}</p>
+                <p id='username'>{{ post.author.username }}</p>
+                <a href="/news/{{ post.pk }}">
+                	<img alt="{{post.title}}" src="/media/{{ post.image }}" style="width:50%">
+                </a>
+                <br>
+		        <p style="margin: 20px">{{ post.text|linebreaksbr }}</p>
 		        <p>Опубликовано: {{ post.published_date }}</p>
 		    </div>
 		{% endfor %}
 	</div>
     {% if News.has_previous %}
-        <a href="?page={{ News.previous_page_number }}">туда</a>
+        <a href="?page={{ News.previous_page_number }}">Назад</a>
     {% endif %}
     Page {{ News.number }} of {{ News.paginator.num_pages }}
     {% if News.has_next %}
-        <a href="?page={{ News.next_page_number }}">сюда</a>
+        <a href="?page={{ News.next_page_number }}">Вперед</a>
     {% endif %}
 </div>
 

@@ -1,21 +1,26 @@
 {% extends 'project/base.html'%}
 {% block  content %}
     <h3>{{ post.title }}</h3>
-    <p>{{ post.author.username }}</p>
-    <img src="/media/{{ post.image }}">
-    <p>{{post.text}}</p>
+    <p style="" id="username">{{ post.author.username }}</p>
+    <img alt="{{post.title}}" src="/media/{{ post.image }}" style="width:65%">
+    <p style="margin: 20px 0px; width: 65%">{{post.text}}</p>
     <p>{{ post.published_date|date:"d-m-Y"}}</p>
+    <div class="comments-list">
     {% for comment in comments %}
-        <p>{{ comment.author }}</p>
-        <p>{{ comment.text }}</p>
+        <div class="comment">
+        <p style="margin: 5px; width: 65%; font-weight: 700!important; color: #2196f3!important;">{{ comment.author }}</p>
+        <p style="margin: 5px 10px; width: 65%;">{{ comment.text }}</p>
+        </div>
     {% endfor %}
+    </div>
     {% if user.is_authenticated %}
-        <form method="post">
-        {% csrf_token %}
-        <p><textarea name="text" title="text"></textarea></p><p>
-            <button type="submit">Комментировать</button></p>
+        <form method="post" class="green-border-focus" style="margin: 20px 5px">
+        {% csrf_token %} 
+        <p><label for="comment-text">Добавьте комментарий</label></p>
+        <p><textarea id="comment-text" class="form-control" style="width: 65%" name="text" title="text"></textarea></p>
+        <p><button type="submit">Комментировать</button></p>
         </form>
     {% else %}
-        <p>Только зарегестрированные умеют комментировать</p>
+        <p>Только зарегистрированные пользователи могут комментировать</p>
     {% endif %}
 {% endblock %}

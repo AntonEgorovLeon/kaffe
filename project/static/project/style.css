@@ -25,3 +25,48 @@ body > .container {
 .container .text-muted {
   margin: 20px 0;
 }
+
+/*comments input textarea*/
+.green-border-focus .form-control:focus {
+    border: 1px solid #8bc34a;
+    box-shadow: 0 0 0 0.2rem rgba(139, 195, 74, .25);
+}
+
+/*usernames*/
+#username {
+    border-bottom: 1px dotted #ccc;
+    margin: 5px; width: 50%; 
+    font-weight: 700!important; color: #2196f3!important;
+}
+
+/*comment list*/
+.comments-list .comment{
+    width: 65%;
+    border-bottom: 1px dotted #ccc;
+}
+
+/*about*/
+#about {
+    display: block;
+    list-style-type: none;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+
+/*tables*/
+.selected{
+    background-color: #b0eeff;  
+}
+
+.tableHead{
+    background-color: #b088ff
+}
+.layer {
+    overflow: scroll; /* Добавляем полосы прокрутки */
+    width: 400px;  /*Ширина блока*/ 
+    height: 300px; /* Высота блока */
+    padding: 5px; /* Поля вокруг текста */
+} 
