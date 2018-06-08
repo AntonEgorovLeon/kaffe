@@ -13,7 +13,7 @@
                 	<img alt="{{post.title}}" src="/media/{{ post.image }}" style="width:50%">
                 </a>
                 <br>
-		        <p style="margin: 20px">{{ post.text|linebreaksbr }}</p>
+		        <p style="margin: 20px; width:50%">{{ post.text|linebreaksbr }}</p>
 		        <p>Опубликовано: {{ post.published_date }}</p>
 		    </div>
 		{% endfor %}
@@ -21,7 +21,7 @@
     {% if News.has_previous %}
         <a href="?page={{ News.previous_page_number }}">Назад</a>
     {% endif %}
-    Page {{ News.number }} of {{ News.paginator.num_pages }}
+    Страница {{ News.number }} из {{ News.paginator.num_pages }}
     {% if News.has_next %}
         <a href="?page={{ News.next_page_number }}">Вперед</a>
     {% endif %}

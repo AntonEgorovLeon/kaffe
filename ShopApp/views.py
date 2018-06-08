@@ -24,21 +24,29 @@ from django.db import connection
 def index(request):
     form = SaleForm(request.POST)
     client = Client.objects.all()
+    products = Good.objects.all()
     if request.method == "POST":
         if form.is_valid():
             sale = form.save(commit=False)
             sale.Date = timezone.now()
-            me = request.user
-            sale.id_manager = me
+            sale.id_manager = request.user
             # id_client from POST is not a model object (just string of client name)
             # it needs to be replaced by an object in sale.form
             sale.id_client = Client.objects.get(ShortName=request.POST.get('id_client'))
-            sale.save()
-            form.add_error(None, 'Продажа учтена')
-            return render(request, 'ShopApp/manager.html',{'form': form,'Clients': client})
+            sale.id_product = Good.objects.get(Name=request.POST.get('id_product'))
+            good1 = sale.id_product
+            if good1.FreeAmount < 1:
+                form.add_error(None, 'Недостаточно товара')
+                return render(request, 'ShopApp/manager.html',{'form': form,'Clients': client, 'Goods':products})
+            else:
+                good1.FreeAmount = good1.FreeAmount - 1
+                good1.save()
+                sale.save()
+                form.add_error(None, 'Продажа учтена')
+                return render(request, 'ShopApp/manager.html',{'form': form,'Clients': client, 'Goods':products})
         else:
             form = SaleForm()
-    return render(request, 'ShopApp/manager.html',{'form': form,'Clients': client})
+    return render(request, 'ShopApp/manager.html',{'form': form,'Clients': client, 'Goods':products})
 
 
 @login_required(login_url='/registration/login/')
@@ -79,9 +87,7 @@ def charts_get(request):
     date1=request.POST.get("id1")
     date2=request.POST.get('id2')
     dates=request.POST.getlist('dates[]')
-    print (dates)
-    # date1='2018-05-01'
-    # date2='2018-05-27'
+
     def dictfetchall(cursor):
         columns = [col[0] for col in cursor.description]
         return [
@@ -89,8 +95,6 @@ def charts_get(request):
             for row in cursor.fetchall()
         ]
 
-    print(date1)
-    print(date2)
     with connection.cursor() as c:
         # c.execute('select Date as date, count(id) as sales from ShopApp_sale where Date between \''+date1+'\' and \''+date2+'\' group by Date order by Date'%(date1, date2))
         c.execute('select "Date", count(id) as Visits from public."ShopApp_visit" where "Date" between \'%s\' and \'%s\' group by "Date" order by "Date"'%(date1, date2))

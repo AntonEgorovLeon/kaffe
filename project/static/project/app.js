@@ -37,6 +37,13 @@ $(document).ready(function(){
         $("#id_id_client").val(visit);
     });
 
+// hightlighting certain PRODUCT in table
+    $(".product-row").click(function(){   
+        $(this).addClass("selected").siblings().removeClass("selected");
+        var visit = $(".selected > .product-name").text();
+        $("#id_id_product").val(visit);
+    });
+
 //showing all visits of certain client
     $(".client-row").click(function(){  
         var id=$(this).attr("id"); 
@@ -62,7 +69,7 @@ $(document).ready(function(){
         });
     });
 
-// CHARTS showcase
+// Visits CHARTS
     $(".get_to_da_JSON").click(function(){ 
         var id1=$( "#dateRange1" ).val(); 
         var id2=$( "#dateRange2" ).val(); 
@@ -80,7 +87,7 @@ $(document).ready(function(){
             },
 
             success: function(json){
-                ChartVisitTotal(json,"ColumnChart");
+                ChartVisitTotal(json);
             },
 
             error: function(json){
@@ -90,7 +97,7 @@ $(document).ready(function(){
     });
 
 // SALES charts
-    $(".get_to_da_JSON1").click(function(){ 
+    $(".chart_sales").click(function(){ 
         var id11=$( "#dateRange11" ).val(); 
         var id12=$( "#dateRange12" ).val(); 
         $.ajax({ 
@@ -188,52 +195,44 @@ function visitTable(json){
     $(".layer").html(tmp);
 };
         
-function ChartVisitTotal(json,ChartType)
+function ChartVisitTotal(json)
 {
-	var c=ChartType;
 	var jsonData=json;
-	google.load("visualization", "1", {packages:["corechart"], callback:drawVisualization});
-
+	// google.load("visualization", "1", {packages:["corechart"], callback:drawVisualization});
+    google.charts.load('current', {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawVisualization);
 	function drawVisualization()
 	{
 		var data = new google.visualization.DataTable();
 		data.addColumn('string', 'Dates');
-		data.addColumn('number', 'Visits');
+		data.addColumn('number', 'Посещения');
 
 		$.each(jsonData, function(i,jsonData)
 		{
 			var value=parseFloat(jsonData.visits);
-			var name=jsonData.date;
-			data.addRows([ [name, value]]);
+			var name=String(jsonData.Date);
+			data.addRows([[name, value]]);
 		});
-
 
 		var options = {
 			title : "Общее количество посещений",
-            is3D: true, //Pie Charts
-            colors : ['#54C492','#f96302' ], //Bar of Pie Charts
+            colors : ['#16a67f' ], //Bar of Pie Charts
+            // width: 500,
+            height: 400,
+            legend: 'none',
             animation:{
-            	duration: 3000,
+            	duration: 1500,
             	easing: 'out',
             	startup: true
             },
-        vAxis: {title: "Количество посещений"}, //Bar of Pie Charts
-        hAxis: {title: "Даты посещений "}, //Bar of Pie Charts
-        colorAxis: {colors: ['#54C492', '#cc0000']}, //Geo Charts
-        datalessRegionColor: '#dedede', //Geo Charts
-        defaultColor: '#dedede' //Geo Charts
-    };
-
-    var chart;
-       if(c=="ColumnChart") // Column Charts
-       	chart=new google.visualization.ColumnChart(document.getElementById('chart_div'));
-       else if(c=="PieChart") // Pie Charts
-       	chart=new google.visualization.PieChart(document.getElementById('piechart_div'));
-       else if(c=="BarChart") // Bar Charts
-       	chart=new google.visualization.BarChart(document.getElementById('bar_div'));
-
-       chart.draw(data, options);
-   }
+            vAxis: {title: "Количество посещений", gridlines: { count: 4 }}, //Bar of Pie Charts
+            hAxis: {title: "Даты посещений ", showTextEvery: 7},
+            defaultColor: '#dedede' //Geo Charts
+        };
+        var chart;
+        chart=new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
 }
 
 
@@ -246,40 +245,40 @@ function ChartVisitTotal1(json,ChartType)
     function drawVisualization1()
     {
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Dates');
-        data.addColumn('number', 'Sales');
+        data.addColumn('string', 'Даты');
+        data.addColumn('number', 'Число продаж');
 
         $.each(jsonData, function(i,jsonData)
         {
             var value=parseFloat(jsonData.sales);
-            var name=jsonData.date;
+            var name=jsonData.Date;
             data.addRows([ [name, value]]);
         });
 
 
         var options = {
             title : "Общее количество продаж",
-            is3D: true, //Pie Charts
-            colors : ['#54C492','#f96302' ], //Bar of Pie Charts
+            colors : ['#16a67f' ], //Bar of Pie Charts
+            // width: 500,
+            height: 400,
+            legend: 'none',
             animation:{
-                duration: 3000,
+                duration: 1500,
                 easing: 'out',
                 startup: true
             },
-        vAxis: {title: "Количество продаж"}, //Bar of Pie Charts
-        hAxis: {title: "Даты продаж "}, //Bar of Pie Charts
-        colorAxis: {colors: ['#54C492', '#cc0000']}, //Geo Charts
-        datalessRegionColor: '#dedede', //Geo Charts
-        defaultColor: '#dedede' //Geo Charts
+            vAxis: {title: "Количество посещений", gridlines: { count: 4 }}, //Bar of Pie Charts
+            hAxis: {title: "Даты посещений ", showTextEvery: 7},
+            defaultColor: '#dedede' //Geo Charts
     };
 
     var chart;
        if(c=="ColumnChart") // Column Charts
-        chart=new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart=new google.visualization.ColumnChart(document.getElementById('chart_div1'));
        else if(c=="PieChart") // Pie Charts
-        chart=new google.visualization.PieChart(document.getElementById('piechart_div'));
+        chart=new google.visualization.PieChart(document.getElementById('piechart_div1'));
        else if(c=="BarChart") // Bar Charts
-        chart=new google.visualization.BarChart(document.getElementById('bar_div'));
+        chart=new google.visualization.BarChart(document.getElementById('bar_div1'));
 
        chart.draw(data, options);
    }

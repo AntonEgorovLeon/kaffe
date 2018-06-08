@@ -33,7 +33,7 @@ class NewsList(views.View, PaginatorMixin):
             'user': request.user,
         }
         news = News.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-        news = self.paginate(news, 2, request.GET.get('page'))
+        news = self.paginate(news, 3, request.GET.get('page'))
         context.update({'News': news})
         return render(request, self.template_name, context)
 

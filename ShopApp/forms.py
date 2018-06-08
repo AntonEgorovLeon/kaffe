@@ -4,7 +4,7 @@ from .models import Client,Sale, Visit
 class SaleForm(forms.ModelForm):
     class Meta:
         model = Sale
-        fields = ('id_product','Note',)
+        fields = ('Note',)
         # formset = ProductFormSetInit
 
 class VisitForm(forms.ModelForm):

@@ -11,6 +11,7 @@ from django.contrib.auth.forms import (
 )
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
+from django.views.generic import TemplateView, FormView, View
 from django.shortcuts import get_object_or_404, render, redirect
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -23,6 +24,7 @@ from .models import (
     ProfileForm
 )
 
+@login_required(login_url='/registration/login/')
 def profile(request):
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
@@ -35,19 +37,25 @@ def profile(request):
         context = {'form': form}
         return render(request, 'registration/profile.html', context)
 
+@login_required(login_url='/registration/login/')
 def profile_change(request):
-    client = Client.objects.get(user=request.user)
-    form = ProfileForm(request.POST, instance=client)
     if request.method == 'POST':        
+        client = Client.objects.get(user=request.user)
+        form = ProfileForm(request.POST, instance=client)
         if form.is_valid():
             print(client.user.id)
             print(client.Phone)
             form.save()
+            client.Phone = form.cleaned_data.get("Phone", None)
+            client.save()
             context = {'form': form}
             # return render(request, 'registration/profile_detail.html', context)
             return redirect('/registration/profile/')
-    context = {'form': form}
-    return render(request, 'registration/profile_detail.html', context)
+    else:
+        client = Client.objects.get(user=request.user)
+        form = ProfileForm(instance=client)
+        context = {'form': form}
+        return render(request, 'registration/profile_detail.html', context)
 
 
 
