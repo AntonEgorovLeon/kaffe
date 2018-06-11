@@ -82,6 +82,7 @@ class ProfileForm(forms.ModelForm):
     )
     Social_status = forms.ChoiceField(choices=SOCIAL_STATUS)
     Sex = forms.ChoiceField(choices=SEX)
+    Birthdate = forms.DateField(widget=forms.TextInput(attrs={'class': 'datepicker'}))
 
     class Meta():
         model = Client
@@ -89,13 +90,15 @@ class ProfileForm(forms.ModelForm):
             'Phone',
             'Site',
             'Social_status',
-            'Sex'
+            'Sex',
+            'Birthdate'
         ]
     initial_fields = [        
             'Phone',
             'Site',
             'Social_status',
-            'Sex'
+            'Sex',
+            'Birthdate'
     ]
 
     # def __init__(self, *args, **kwargs):
@@ -111,6 +114,7 @@ class ProfileForm(forms.ModelForm):
         client.Site = self.cleaned_data['Site']
         client.Social_status = self.cleaned_data['Social_status']
         client.Sex = self.cleaned_data['Sex']
+        client.Birthdate = self.cleaned_data['Birthdate']
         if commit:
             client.save()
 

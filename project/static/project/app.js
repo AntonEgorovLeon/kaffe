@@ -27,7 +27,11 @@ $(document).ready(function(){
     $( "#tabs" ).tabs();
 
 //init datepicker jQueryUI
-    $( ".datepicker" ).val(output);    
+    $( ".datepicker #id1" ).val(output);   
+    $( ".datepicker #id2" ).val(output);   
+    $( ".datepicker #id11" ).val(output);   
+    $( ".datepicker #id12" ).val(output);   
+
      $("#myCarousel").carousel();
 
 // hightlighting certain client in table

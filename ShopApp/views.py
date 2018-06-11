@@ -24,14 +24,12 @@ from django.db import connection
 def index(request):
     form = SaleForm(request.POST)
     client = Client.objects.all()
-    products = Good.objects.all()
+    products = Good.objects.all().order_by('-Name')
     if request.method == "POST":
         if form.is_valid():
             sale = form.save(commit=False)
             sale.Date = timezone.now()
             sale.id_manager = request.user
-            # id_client from POST is not a model object (just string of client name)
-            # it needs to be replaced by an object in sale.form
             sale.id_client = Client.objects.get(ShortName=request.POST.get('id_client'))
             sale.id_product = Good.objects.get(Name=request.POST.get('id_product'))
             good1 = sale.id_product
@@ -66,7 +64,6 @@ def visit_add(request):
             else:
                 f1 = True
             if Sale.objects.filter(id_client=visit.id_client, Date=visit.Date).exists() and f1:
-                visit.save()
                 form.add_error(None, 'Такой посетитель уже учтен')
                 return render(request, 'ShopApp/add_visit.html',{'form': form,'Clients': client})
             else:
@@ -86,7 +83,8 @@ def charts(request):
 def charts_get(request):
     date1=request.POST.get("id1")
     date2=request.POST.get('id2')
-    dates=request.POST.getlist('dates[]')
+    sex=request.POST.get('dates[]')
+    # socstat=request.POST.get()
 
     def dictfetchall(cursor):
         columns = [col[0] for col in cursor.description]

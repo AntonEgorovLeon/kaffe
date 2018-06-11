@@ -1,0 +1,18 @@
+{% extends 'project/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <h2>Создать новость</h2>
+	<div class="col-sm-8" style="margin: 40px">
+        <form method="post" enctype="multipart/form-data">{% csrf_token %}
+            <p><label for="id_title">Тема:</label> {{form.title}}</p>
+            <p><label for="id_text">Текст:</label> {{form.text}}</p>
+            <p><label for="id_image">Изоображение:</label> {{form.image}}</p>
+        <input type="submit" value="Сохранить" />
+        </form>
+	</div>
+</div>
+
+
+{% endblock %}

@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import News, Comment
 from django.utils import timezone
 from django.template.context_processors import csrf
-from .forms import CommentForm
+from .forms import CommentForm, CreateNewsForm
 
 
 class PaginatorMixin:
@@ -32,7 +32,8 @@ class NewsList(views.View, PaginatorMixin):
         context = {
             'user': request.user,
         }
-        news = News.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+        # news = News.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+        news = News.objects.all().order_by('-created_date')
         news = self.paginate(news, 3, request.GET.get('page'))
         context.update({'News': news})
         return render(request, self.template_name, context)
@@ -79,3 +80,16 @@ class Detail(generic.DetailView):
     def get_queryset(self):
         """Return the last five published questions."""
         return News.objects.order_by('-pub_date')[:5]
+
+class Create(generic.CreateView):
+    template_name = 'NewsApp/createNews.html'
+    context_object_name = 'form'
+    form_class = CreateNewsForm
+
+    def form_valid(self, form):
+        model = form.save(commit=False)
+        model.author = self.request.user
+        model.published_date = timezone.now()
+        model.created_date = timezone.now()
+        model.save()
+        return HttpResponseRedirect('/news/')
