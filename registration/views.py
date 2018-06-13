@@ -105,6 +105,8 @@ def registration(request):
             return HttpResponseRedirect("/")
         else: 
             print('Error')
+            form.add_error(None, 'Ошибка при заполнении одного из полей')
+            return render(request, 'registration/reg.html',{'form': form})
     else:
         form = RegistrationForm()
         context = {'form': form}

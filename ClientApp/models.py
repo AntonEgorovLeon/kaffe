@@ -27,11 +27,13 @@ class Client(models.Model):
     def __str__(self):
         return self.user.username
 
-# def create_profile(sender, **kwargs):
-#     if kwargs['created']:
-#         client = Client.objects.create(user=kwargs['instance'])
+def create_profile(sender, **kwargs):
+    if kwargs['created']:
+        client = Client.objects.create(user=kwargs['instance'])
+        client.ShortName = client.user.username
+        client.save()
 
-# post_save.connect(create_profile,sender=User)
+post_save.connect(create_profile,sender=User)
 
 
 class Achievment(models.Model):

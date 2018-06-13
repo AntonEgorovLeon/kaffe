@@ -143,7 +143,7 @@ $(document).ready(function(){
                 $("#clients").css("background","#FFF");
             },
             error: function(json){
-                alert('request failed');
+                //alert('request failed');
             }
         });
     });
@@ -163,7 +163,7 @@ $(document).ready(function(){
 
 
 
-
+// autocomplete for client.
 function clientTable(json){
     var tmp = "<table class=\"table table-bordered\"><tr class=\"tableHead\"><td>Имя</td><td>Сайт</td><td>Дата рождения</td></tr>";
     for (var i = 0; i < json.listVal.length; i++) {
@@ -175,7 +175,8 @@ function clientTable(json){
                 "</tr> "    
     };
     tmp = tmp + "</table>";
-    $(".layer").html(tmp);
+    // specifying for concrete table of clients in adding shop
+    $("#layer").html(tmp);
     $(".visitor-row").click(function(){
         $(this).addClass("selected").siblings().removeClass("selected");
         var visit = $(".selected > .visitor-login").text();

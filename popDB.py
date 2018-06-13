@@ -17,33 +17,6 @@ d2 = datetime(2005, 7, 14)
 SS = ['0', '1', '2', '3']
 SX = ['0', '1']
 
-# foo = ['a', 'b', 'c', 'd', 'e']
-# print(random.choice(foo))
-# print('a')
-
-# class Client(models.Model):
-#     id_role = models.ForeignKey(Role, on_delete=models.CASCADE)
-#     login = models.CharField(max_length=20, blank=True, null=True)
-#     full_name = models.CharField(max_length=30, blank=True, null=True)
-#     pwd = models.CharField(max_length=10, blank=True, null=True)
-#     begindate = models.DateField(blank=True, null=True)
-#     birthdate = models.DateField(blank=True, null=True)
-#     phone = models.CharField(max_length=15, blank=True, null=True)
-#     email = models.EmailField(blank=True, null=True)
-#     site = models.CharField(max_length=50, blank=True, null=True)
-#     SOCIAL_STATUS = (
-#         (1,'school'),
-#         (2,'student'),
-#         (3,'worker'),
-#         (0,'dependent')
-#     )
-#     SEX = (
-#         (1,'male'),
-#         (0,'female')
-#     )
-#     social_status = models.CharField(choices=SOCIAL_STATUS, max_length=2,default=0)
-#     sex = models.CharField(choices=SEX,  max_length=2,default=1)
-
 Client.objects.filter(ShortName__icontains='AutoUser').delete()
 User.objects.filter(username__icontains='AutoCreated').delete()
 

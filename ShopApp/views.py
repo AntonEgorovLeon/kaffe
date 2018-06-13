@@ -14,11 +14,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from ClientApp.models import Client
-from .models import Sale, Good
+from .models import Sale, Good, Visit
 from django.db import connection
-
-# Create your views here.
-#-*- coding:utf-8 -*-
 
 @login_required(login_url='/registration/login/')
 def index(request):
@@ -63,7 +60,7 @@ def visit_add(request):
                 f1 = False
             else:
                 f1 = True
-            if Sale.objects.filter(id_client=visit.id_client, Date=visit.Date).exists() and f1:
+            if Visit.objects.filter(id_client=visit.id_client, Date=visit.Date).exists() and f1:
                 form.add_error(None, 'Такой посетитель уже учтен')
                 return render(request, 'ShopApp/add_visit.html',{'form': form,'Clients': client})
             else:
@@ -84,7 +81,6 @@ def charts_get(request):
     date1=request.POST.get("id1")
     date2=request.POST.get('id2')
     sex=request.POST.get('dates[]')
-    # socstat=request.POST.get()
 
     def dictfetchall(cursor):
         columns = [col[0] for col in cursor.description]
@@ -94,7 +90,6 @@ def charts_get(request):
         ]
 
     with connection.cursor() as c:
-        # c.execute('select Date as date, count(id) as sales from ShopApp_sale where Date between \''+date1+'\' and \''+date2+'\' group by Date order by Date'%(date1, date2))
         c.execute('select "Date", count(id) as Visits from public."ShopApp_visit" where "Date" between \'%s\' and \'%s\' group by "Date" order by "Date"'%(date1, date2))
         return JsonResponse(dictfetchall(c), safe=False)
     return render(request, 'ShopApp/charts.html')
@@ -113,7 +108,6 @@ def charts_get1(request):
     print(date1)
     print(date2)
     with connection.cursor() as c:
-        # c.execute('select Date as date, count(id) as sales from ShopApp_sale where Date between \''+date1+'\' and \''+date2+'\' group by Date order by Date'%(date1, date2))
         c.execute('select "Date", count(id) as sales from public."ShopApp_sale" where "Date" between \'%s\' and \'%s\' group by "Date" order by "Date"'%(date1, date2))
         return JsonResponse(dictfetchall(c), safe=False)
     return render(request, 'ShopApp/charts.html')
@@ -122,9 +116,6 @@ def charts_get1(request):
 def client_record(request):
     wanted = request.POST.get('cl_id')
     sale = Sale.objects.filter(id_client=wanted).values('id_client__ShortName','Date','id_product__Name')
-    # visit = Visit.objects.filter(id_client=wanted)
-    # data = serializers.serialize('json', visit, fields('id_client','date','id_product'))
-    # return JsonResponse(visit, safe=False)
     return JsonResponse({'listVal': list(sale)})
 
 def client_auto(request):
